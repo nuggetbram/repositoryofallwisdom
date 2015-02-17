@@ -1,0 +1,37 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+
+# hyperstake stuff
+
+object_script.*
+.DS_Store
+hyperstake-qt
+hyperstake-qt.exe
+hyperstaked
+hyperstaked.exe
+qrc_bitcoin.cpp
+build/*
+release/*
+makefile.release
+makefile.debug
+makefile
