@@ -944,7 +944,8 @@ static const int CUTOFF_HEIGHT = POW_CUTOFF_HEIGHT;
 // miner's coin base reward based on nBits
 int64 GetProofOfWorkReward(int nHeight, int64 nFees, uint256 prevHash)
 {
-   
+	float nSubsidy;
+	
 	if(nHeight == 50)
 	{
 		nSubsidy = 6000000 * COIN;
@@ -1121,13 +1122,13 @@ int64 GetProofOfWorkReward(int nHeight, int64 nFees, uint256 prevHash)
      	     }
      	     
 	     
-    float nSubsidy = nBlockReward * COIN;
+    nSubsidy = nBlockReward * COIN;
 
 
     return nSubsidy + nFees;
 }
 
-float GetFoundationAmount(nHeight)
+float GetFoundationAmount(int nHeight)
 {
 	float nBlockReward = 3.8;
 	
@@ -2013,9 +2014,23 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
 		// printf("==> Got prevHash = %s\n", prevHash.ToString().c_str());
 	}
 
-	if (vtx[0].GetValueOut() > GetProofOfWorkReward(pindex->nHeight, nFees, prevHash))
-		return false;
+	if (vtx[0].GetValueOut() > GetProofOfWorkReward(pindex->nHeight, nFees, prevHash) + GetFoundationAmount(pindex->nHeight))
+            return error("ConnectBlock() : claiming to have created too much (new)");
 
+    
+    if(IsProofOfWork())
+    {
+        CBitcoinAddress address(!fTestNet ? FOUNDATION_ADDRESS : FOUNDATION_ADDRESS_TEST);
+        CScript scriptPubKey;
+        scriptPubKey.SetDestination(address.Get());
+        if (vtx[0].vout[1].scriptPubKey != scriptPubKey)
+            return error("ConnectBlock() : coinbase does not pay to the foundation address)");
+        if (vtx[0].vout[1].nValue < GetFoundationAmount(pindex->nHeight))
+            return error("ConnectBlock() : coinbase does not pay enough to foundation addresss");
+    }
+    
+    
+    
     // Update block index on disk without changing it in memory.
     // The memory index structure will be changed after the db commits.
     if (pindex->pprev)
@@ -3024,7 +3039,7 @@ bool LoadBlockIndex(bool fAllowNew)
             return false;
 
         // Genesis block
-        const char* pszTimestamp = "29/5/14 - Replica Ghostbusters car stops the traffic - BBC UK";
+        const char* pszTimestamp = "Tuesday, February 17, 2015";
         CTransaction txNew;
         txNew.nTime = nChainStartTime;
         txNew.vin.resize(1);
@@ -3039,7 +3054,7 @@ bool LoadBlockIndex(bool fAllowNew)
         block.nVersion = 1;
         block.nTime    = 1424163276;
         block.nBits    = bnProofOfWorkLimit.GetCompact();
-        block.nNonce   = 0;
+        block.nNonce   = 718468;
         if (false) {
 
         // This will figure out a valid hash and Nonce if you're
@@ -3064,7 +3079,7 @@ bool LoadBlockIndex(bool fAllowNew)
 
 
 
-        assert(block.hashMerkleRoot == uint256("0x"));
+        assert(block.hashMerkleRoot == uint256("0x52871c37263dad3cebb67f8cf57c83f40a182093f1bd781d32bfc74b29333e06"));
 		assert(block.GetHash() == (!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet));
 
         // Start new block file
@@ -4427,8 +4442,13 @@ CBlock* CreateNewBlock(CWallet* pwallet, bool fProofOfStake)
     CTransaction txNew;
     txNew.vin.resize(1);
     txNew.vin[0].prevout.SetNull();
-    txNew.vout.resize(1);
+    CBitcoinAddress address(!fTestNet ? FOUNDATION_ADDRESS : FOUNDATION_ADDRESS_TEST);
+    txNew.vout.resize(2);
     txNew.vout[0].scriptPubKey << reservekey.GetReservedKey() << OP_CHECKSIG;
+    txNew.vout[1].scriptPubKey.SetDestination(address.Get());
+    
+    /*txNew.vout.resize(1);
+    txNew.vout[0].scriptPubKey << reservekey.GetReservedKey() << OP_CHECKSIG;*/
 
     // Add our coinbase tx as first transaction
     pblock->vtx.push_back(txNew);
@@ -4679,8 +4699,10 @@ CBlock* CreateNewBlock(CWallet* pwallet, bool fProofOfStake)
             printf("CreateNewBlock(): total size %"PRI64u"\n", nBlockSize);
 
         if (pblock->IsProofOfWork())
-            pblock->vtx[0].vout[0].nValue = GetProofOfWorkReward(pindexPrev->nHeight+1, nFees, pindexPrev->GetBlockHash());
-
+            {
+        	pblock->vtx[0].vout[0].nValue = GetProofOfWorkReward(pindexPrev->nHeight+1, nFees, pindexPrev->GetBlockHash());
+        	pblock->vtx[0].vout[1].nValue = GetFoundationAmount(pindexPrev->nHeight+1);
+            }
         // Fill in header
         pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
         if (pblock->IsProofOfStake())

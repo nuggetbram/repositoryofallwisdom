@@ -27,7 +27,7 @@ class CRequestTracker;
 class CNode;
 
 
-#define POW_CUTOFF_HEIGHT 21000
+#define POW_CUTOFF_HEIGHT 22075200
 
 static const unsigned int MAX_BLOCK_SIZE = 1000000;
 static const unsigned int MAX_BLOCK_SIZE_GEN = MAX_BLOCK_SIZE/2;
@@ -37,12 +37,15 @@ static const unsigned int MAX_INV_SZ = 30000;
 static const int64 MIN_TX_FEE = .00001 * COIN;
 static const int64 MIN_RELAY_TX_FEE = .00001 * COIN;
 static const int64 MAX_MONEY = 10000000 * COIN;
-static const int64 MAX_MONEY2 = 10000000 * COIN;			// 60 mil
-static const int64 MAX_MINT_PROOF_OF_STAKE = 3.0 * COIN;	// 200% annual interest
-static const int64 MAX_MINT_PROOF_OF_STAKEV2 = 3.0 * COIN;	// 750% annual interest
-static const unsigned int FORK_TIME = 1404678625; // Sun, 06 Jul 2014 20:30:25 GMT
-static const unsigned int FORK_TIME2 = 1423836000; // Fri, 13 Feb 2015 14:00:00 GMT
+static const int64 MAX_MONEY2 = 10000000 * COIN;		
+static const int64 MAX_MINT_PROOF_OF_STAKE = 3.0 * COIN;	
+static const int64 MAX_MINT_PROOF_OF_STAKEV2 = 3.0 * COIN;	
+static const unsigned int FORK_TIME = 0; // Launch
+static const unsigned int FORK_TIME2 = 0; // Launch
 static const int64 MIN_TXOUT_AMOUNT = MIN_TX_FEE;
+
+#define FOUNDATION_ADDRESS "7QnihqNNZbfWCVyEqfRJTehVA3Auid45bm"
+#define FOUNDATION_ADDRESS_TEST "mwmPTAA7cSDY8Dd5rRHuYitwS2hByXQpdA"
 
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 // Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp.
@@ -54,10 +57,10 @@ static const int fHaveUPnP = true;
 static const int fHaveUPnP = false;
 #endif
 
-static const uint256 hashGenesisBlockOfficial("0x");
+static const uint256 hashGenesisBlockOfficial("0x00000fbb6451c671bc9b6d5d973425be5ffc56816647f180639701287b28e3d5");
 static const uint256 hashGenesisBlockTestNet ("0x");
 
-static const int64 nMaxClockDrift = 15 * 60;        // fifteen minutes
+static const int64 nMaxClockDrift = 25 * 60;        // 25 minutes
 inline int64 GetClockDrift(int64 nTime)
 {
 	return 60 * 25;

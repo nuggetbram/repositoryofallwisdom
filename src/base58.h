@@ -276,7 +276,7 @@ class CBitcoinAddress : public CBase58Data
 public:
     enum
     {
-        PUBKEY_ADDRESS = 117,  // GreenCoinX addresses begin with 't'
+        PUBKEY_ADDRESS = 35,  // GreenCoinX addresses begin with 'G'
         SCRIPT_ADDRESS = 8, 
         PUBKEY_ADDRESS_TEST = 109,
         SCRIPT_ADDRESS_TEST = 196,

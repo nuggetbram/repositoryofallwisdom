@@ -28,7 +28,7 @@ GLOBAL sph_panama_context	z_panama;
 } while (0) 
 
 template<typename T1>
-inline uint256 HashMirror(const T1 pbegin, const T1 pend)
+inline uint256 Hash9(const T1 pbegin, const T1 pend)
 
 {
     sph_sha256_context	 ctx_sha256;
