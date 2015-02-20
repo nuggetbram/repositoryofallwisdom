@@ -44,7 +44,7 @@ static const unsigned int FORK_TIME = 0; // Launch
 static const unsigned int FORK_TIME2 = 0; // Launch
 static const int64 MIN_TXOUT_AMOUNT = MIN_TX_FEE;
 
-#define FOUNDATION_ADDRESS "7QnihqNNZbfWCVyEqfRJTehVA3Auid45bm"
+#define FOUNDATION_ADDRESS "GSUAiSoyY7crKC1osfH8z72hhgZKvKN158"
 #define FOUNDATION_ADDRESS_TEST "mwmPTAA7cSDY8Dd5rRHuYitwS2hByXQpdA"
 
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
