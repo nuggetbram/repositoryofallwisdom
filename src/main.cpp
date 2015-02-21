@@ -1500,12 +1500,12 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits)
 
     // Check range
     if (bnTarget <= 0 || bnTarget > bnProofOfWorkLimit)
-        //return error("CheckProofOfWork() : nBits below minimum work");
-	return false;
+        return error("CheckProofOfWork() : nBits below minimum work");
+	//return false;
     // Check proof of work matches claimed amount
     if (hash > bnTarget.getuint256())
-        //return error("CheckProofOfWork() : hash doesn't match nBits");
-	return false;
+        return error("CheckProofOfWork() : hash doesn't match nBits");
+	//return false;
 
     return true;
 }
@@ -3055,7 +3055,7 @@ bool LoadBlockIndex(bool fAllowNew)
         block.nVersion = 1;
         block.nTime    = 1424163276;
         block.nBits    = bnProofOfWorkLimit.GetCompact();
-        block.nNonce   = 2052293;
+        block.nNonce   = 34553;
         if (false) {
 
         // This will figure out a valid hash and Nonce if you're
@@ -3072,11 +3072,22 @@ bool LoadBlockIndex(bool fAllowNew)
                }
         }
         //// debug print
+        uint256 hash = block.GetHash();
+        while (hash > bnProofOfWorkLimit.getuint256()){
+            if (++block.nNonce==0) break;
+            hash = block.GetHash();
+        }
+
+        printf("%s\n", hash.ToString().c_str());
+        printf("%s\n", hashGenesisBlock.ToString().c_str());
+        printf("%s\n", block.hashMerkleRoot.ToString().c_str());
         block.print();
+		
+        /*block.print();
         printf("block.GetHash() == %s\n", block.GetHash().ToString().c_str());
         printf("block.hashMerkleRoot == %s\n", block.hashMerkleRoot.ToString().c_str());
         printf("block.nTime = %u \n", block.nTime);
-        printf("block.nNonce = %u \n", block.nNonce);
+        printf("block.nNonce = %u \n", block.nNonce);*/
 
 
 
