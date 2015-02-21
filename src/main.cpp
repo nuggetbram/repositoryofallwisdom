@@ -1290,7 +1290,7 @@ float GetFoundationAmount(int nHeight)
      	     {
      	     nBlockReward = 0.1;
      	     }
-     else
+     else if (nHeight >  22600800)
      	     {
      	     nBlockReward = 0;
      	     }
