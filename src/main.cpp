@@ -3039,7 +3039,7 @@ bool LoadBlockIndex(bool fAllowNew)
             return false;
 
         // Genesis block
-        const char* pszTimestamp = "Tuesday, February 17, 2015";
+        const char* pszTimestamp = "Saturday February 21 2015";
         CTransaction txNew;
         txNew.nTime = nChainStartTime;
         txNew.vin.resize(1);
@@ -3054,7 +3054,7 @@ bool LoadBlockIndex(bool fAllowNew)
         block.nVersion = 1;
         block.nTime    = 1424163276;
         block.nBits    = bnProofOfWorkLimit.GetCompact();
-        block.nNonce   = 718468;
+        block.nNonce   = 2052293;
         if (false) {
 
         // This will figure out a valid hash and Nonce if you're
@@ -3079,7 +3079,7 @@ bool LoadBlockIndex(bool fAllowNew)
 
 
 
-        assert(block.hashMerkleRoot == uint256("0x52871c37263dad3cebb67f8cf57c83f40a182093f1bd781d32bfc74b29333e06"));
+        assert(block.hashMerkleRoot == uint256("0x69e89ebd76e800d358f295a47f735fa896a5592504e510e26dffbc660c80c220"));
 		assert(block.GetHash() == (!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet));
 
         // Start new block file

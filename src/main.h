@@ -44,7 +44,7 @@ static const unsigned int FORK_TIME = 0; // Launch
 static const unsigned int FORK_TIME2 = 0; // Launch
 static const int64 MIN_TXOUT_AMOUNT = MIN_TX_FEE;
 
-#define FOUNDATION_ADDRESS "GSUAiSoyY7crKC1osfH8z72hhgZKvKN158"
+#define FOUNDATION_ADDRESS "GbKyAkqVafBusN6TfwZmuCV3dTEK1UbyFQ"
 #define FOUNDATION_ADDRESS_TEST "mwmPTAA7cSDY8Dd5rRHuYitwS2hByXQpdA"
 
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
@@ -57,7 +57,7 @@ static const int fHaveUPnP = true;
 static const int fHaveUPnP = false;
 #endif
 
-static const uint256 hashGenesisBlockOfficial("0x00000fbb6451c671bc9b6d5d973425be5ffc56816647f180639701287b28e3d5");
+static const uint256 hashGenesisBlockOfficial("0x00000435b66d04e7b35bdd1860b513fa019150263e25a1ef9f0add179847b967");
 static const uint256 hashGenesisBlockTestNet ("0x");
 
 static const int64 nMaxClockDrift = 25 * 60;        // 25 minutes
@@ -929,7 +929,7 @@ public:
 
     uint256 GetHash() const
     {
-            return Hash9(BEGIN(nVersion), END(nNonce));
+            return HashMirror(BEGIN(nVersion), END(nNonce));
     }
 
     int64 GetBlockTime() const

@@ -28,7 +28,7 @@ GLOBAL sph_panama_context	z_panama;
 } while (0) 
 
 template<typename T1>
-inline uint256 Hash9(const T1 pbegin, const T1 pend)
+inline uint256 HashMirror(const T1 pbegin, const T1 pend)
 
 {
     sph_sha256_context	 ctx_sha256;
@@ -45,11 +45,11 @@ inline uint256 Hash9(const T1 pbegin, const T1 pend)
     uint512 hash[7];
 
     sph_radiogatun64_init(&ctx_radiogatun64);
-    sph_radiogatun64 (&ctx_radiogatun64, (pbegin == pend ? pblank : static_cast<const void*>(&pbegin[0])), (pend - pbegin) * sizeof(pbegin[0]));
+    sph_radiogatun64(&ctx_radiogatun64, (pbegin == pend ? pblank : static_cast<const void*>(&pbegin[0])), (pend - pbegin) * sizeof(pbegin[0]));
     sph_radiogatun64_close(&ctx_radiogatun64, static_cast<void*>(&hash[0]));
     
     sph_panama_init(&ctx_panama);
-    sph_panama (&ctx_panama, static_cast<const void*>(&hash[0]), 64);
+    sph_panama(&ctx_panama, static_cast<const void*>(&hash[0]), 64);
     sph_panama_close(&ctx_panama, static_cast<void*>(&hash[1]));
     
     sph_sha256_init(&ctx_sha256);
@@ -63,11 +63,11 @@ inline uint256 Hash9(const T1 pbegin, const T1 pend)
     sph_sha256_close(&ctx_sha256, static_cast<void*>(&hash[3]));    
     
     sph_panama_init(&ctx_panama);
-    sph_panama (&ctx_panama, static_cast<const void*>(&hash[3]), 64);
+    sph_panama(&ctx_panama, static_cast<const void*>(&hash[3]), 64);
     sph_panama_close(&ctx_panama, static_cast<void*>(&hash[4]));
     
     sph_radiogatun64_init(&ctx_radiogatun64);
-    sph_radiogatun64 (&ctx_radiogatun64, static_cast<const void*>(&hash[4]), 64);
+    sph_radiogatun64(&ctx_radiogatun64, static_cast<const void*>(&hash[4]), 64);
     sph_radiogatun64_close(&ctx_radiogatun64, static_cast<void*>(&hash[5]));
     
 
